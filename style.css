@@ -1,0 +1,84 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+h1{
+    text-align: center;
+    padding-top: 6%;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+}
+
+#circle {
+    width: 300px; /* Adjust size of the circle */
+    height: 300px; /* Adjust size of the circle */
+    border-radius: 50%;
+    border: solid 25px;
+    border-bottom-color: #ffca3a;
+    border-top-color: #6a4c93;
+    border-left-color: #ff595e;
+    border-right-color: #1982c4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position:relative;
+}
+
+#ball {
+    width: 55px; /* Adjust size of the ball */
+    height: 55px; /* Adjust size of the ball */
+    /*background-color: #1982c4; / Default color for the ball */
+    border-radius: 50%;
+    position: absolute;
+}
+
+
+
+
+#buttons_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+button{
+    padding: 30px 150px;
+    border: solid 5px;
+    border-radius: 5px;
+    border-bottom-color: #ffca3a;
+    border-top-color: #6a4c93;
+    border-left-color: #ff595e;
+    border-right-color: #1982c4;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+/*GPT*/
+#floatingWindow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
