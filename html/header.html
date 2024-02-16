@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/header.js" defer></script>
+    <title>Document</title>
+    <style>
+        .links_container img{
+    padding-top: 10px;
+    margin-left: 15px;
+    width: 35px;
+    height: 35px;
+}
+
+.links_container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .navbar {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .navbar a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .navbar a:hover {
+    background-color: #ddd;
+  }
+  
+  .links_container:hover .navbar {
+    display: block;
+  }
+</style>
+</head>
+
+<body> 
+    <header>
+        <div > 
+            <div class="links_container ">
+                   <a href ="/html/games.html"> <img src="/images/home.png" id="home" class = "icons"></a>
+            </div>
+            <div class="links_container ">
+                    <img src="/images/trophy.png" id="trophy" class = "icons">
+                    <div class="navbar" >
+                        <a href="/html/score.html">scores</a>
+                    </div>
+            </div>
+            <div class="links_container ">
+                    <img src="/images/exit.png" id="log_off" class = "icons">
+                    <div class="navbar" id ="log_off_button" >
+                        <a href="#"  onclick="check_out()" >log off</a>
+                    </div>
+            </div>
+        </div>
+        
+    </header>
+    <script>
+        function check_out(e){
+        console.log("here");
+        e.preventDefault();
+        localStorage.setItem("current_user",JSON.stringify({}));
+        window.location.href = "/logIn.html";
+    }
+    </script>
+</body>
+</html>
+
+
+
+
+

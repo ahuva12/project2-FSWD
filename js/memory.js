@@ -1,11 +1,11 @@
-
-let imagePairs, num_pairs, rows, colums, level, gameBoard, initialScore;
+let imagePairs=0, num_pairs=0, rows=0, colums=0, level=0, gameBoard=0, initialScore=0, finishScore=0;
 let negative_score = 0;
 let revealedImages = [];
+//localStorage.setItem("best_memory_players",[]);
 
 
 function choose_level(button){
-    button.style.backgroundColor = 'aqua';
+    button.style.backgroundColor = '#EF6D98';
     let levelButtons = document.getElementsByClassName('level-button');
     for (let button of levelButtons) {
         button.disabled = true;
@@ -14,57 +14,53 @@ function choose_level(button){
     let imageFileNames = [];
     if (level === 'Easy') {
         imageFileNames = ['img1.jpg','img2.jpg','img3.jpg',];
-        updateDetailsGame(2, 3, 3, 80);
+        updateDetailsGame(2, 3, 3, 100);
     } 
     else if (level === 'Medium') {
         imageFileNames = ['img1.jpg',
         'img2.jpg',
         'img3.jpg',
         'img4.jpg',
-        'img5.webp',
+        'img5.jpg',
         'img6.jpg',];
-        updateDetailsGame(3, 4, 6, 90);  
+        updateDetailsGame(3, 4, 6, 130);  
     } 
     else if (level === 'Hard') {
         imageFileNames = ['img1.jpg',
         'img2.jpg',
         'img3.jpg',
         'img4.jpg',
-        'img5.webp',
+        'img5.jpg',
         'img6.jpg',
-        'img7.webp',
+        'img7.jpg',
         'img8.jpg',
         'img9.jpg',
         'img10.jpg'];
-        updateDetailsGame(4, 5, 10, 100);
+        updateDetailsGame(4, 5, 10, 160);
     }
     imagePairs = imageFileNames.concat(imageFileNames);
-    console.log('choose_level');
 }
 
 function goToPlay() {
     updateStyle(level);
     updateGameBoard(rows,colums ,num_pairs, imagePairs);
-    console.log('goToPlay');
+    updateStyleCard(level);
+    updataTimer();
 }
 
 function showImg(){
     let cardIndex = Array.from(this.parentNode.children).indexOf(this);
     let imageIndex = cardIndex + (colums * Array.from(this.parentNode.parentNode.children).indexOf(this.parentNode)); 
-    console.log(cardIndex);
-
-    console.log(imageIndex);
 
     revealedImages.push(imagePairs[imageIndex]);
     this.setAttribute('data-image', imagePairs[imageIndex]);
     this.classList.add('flipped');
-    this.style.backgroundImage = `url(images/${imagePairs[imageIndex]})`;
-    console.log(revealedImages);
+    this.style.backgroundImage = `url(/images/${imagePairs[imageIndex]})`;
+
     if (revealedImages.length === 2) {
         checkMatching(revealedImages);
         revealedImages = [];
     }
-    console.log('showImg');
 }
 
 
@@ -89,19 +85,17 @@ function checkMatching() {
         num_pairs--;
     }
     setTimeout(checkWin, 1000);
-    console.log('checkMatching');
 }
 
 function checkWin(){
     if (num_pairs === 0){
-        console.log(num_pairs);
-        let finishScore = initialScore + negative_score;
+        finishScore = initialScore + negative_score;
         let winMessage = document.createElement('div');
         gameBoard.appendChild(winMessage);
         winMessage.className = 'win-message';
         winMessage.textContent = 'You winner!\nYour score is: ' + finishScore;
+        updateStorage(finishScore);
     }
-    console.log('checkWin');
 }
 
 function updateDetailsGame(num_rows,num_colums, num_of_pairs, initial_score){
@@ -109,7 +103,6 @@ function updateDetailsGame(num_rows,num_colums, num_of_pairs, initial_score){
     colums = num_colums;
     num_pairs = num_of_pairs;
     initialScore = initial_score
-    console.log('updateDetailsGame');
 }
 
 function updateGameBoard(rows,colums, num_pairs, imagePairs){
@@ -125,38 +118,99 @@ function updateGameBoard(rows,colums, num_pairs, imagePairs){
         }
         gameBoard.appendChild(row);
     }
-    console.log('updateGameBoard');
 }
 
 function updateStyle(level){
     let newCssLink = document.createElement('link');
     newCssLink.rel = 'stylesheet';
     newCssLink.type = 'text/css';
-    newCssLink.href = 'game.css'; 
+    newCssLink.href = '/css/memory_game.css'; 
     document.head.appendChild(newCssLink);
-
     gameBoard = document.getElementById('game-board');  
     gameBoard.innerHTML = '';  
+}
 
+function updateStyleCard(level){
     let cards = document.querySelectorAll('.card');
+
     cards.forEach(card => {
-        if (level === 'EASY') {
-            card.style.width = '200px';
-            card.style.height = '200px';
-        } else if (level === 'MEDIUM') {
-            card.style.width = '150px';
-            card.style.height = '150px';
+        if (level === 'Easy') {
+            card.style.width = '180px';
+            card.style.height = '180px';
+        } else if (level === 'Medium') {
+            card.style.width = '130px';
+            card.style.height = '130px';
         }
     });
-    console.log('updateStyle');
 }
+
+function updataTimer() {
+    let timer = document.createElement('div');
+    timer.className = 'timer';
+    document.body.appendChild(timer);
+
+    let endTime = new Date().getTime() + 180000; 
+
+    function updateDisplay() {
+        let currentTime = new Date().getTime();
+        let remainingTime = endTime - currentTime;
+
+        if (remainingTime < 0 ) {
+            clearInterval(timerInterval); 
+            let loseMessage = document.createElement('div');
+            gameBoard.appendChild(loseMessage);
+            loseMessage.className = 'lose-message';
+            loseMessage.textContent = `oops...\nYou're out of time!`;
+            loseMessage.style.fontSize = '30px';
+            setTimeout(function(){
+                window.location.href = "/html/memory.html";
+            },3500);
+        }else if(num_pairs === 0)
+        {
+            clearInterval(timerInterval); 
+        }
+        else {
+            let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+            timer.textContent = 'Time remaining: ' + minutes + 'm ' + seconds + 's';
+        }
+    }
+
+    let timerInterval = setInterval(updateDisplay, 1000);
+    updateDisplay();
+}
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-    console.log('shuffleArray');
 }
 
+function updateStorage(finishScore){
+    var curr_user_Json = localStorage.getItem('current_user');
+    var curr_user = JSON.parse(curr_user_Json) || [];
+    curr_user.games_scores[1] = finishScore;
+    localStorage.setItem('current_user', JSON.stringify(curr_user))
+
+    var users_Json = localStorage.getItem('users');
+    var users = JSON.parse(users_Json) || [];
+    for(let i = 0; i<users.length; i++){
+        if(users[i].user_name === curr_user.user_name)
+        {
+            users[i].games_scores[1] = finishScore;
+            localStorage.setItem('users',JSON.stringify(users));
+            break;
+        }       
+   }
+
+}
+
+
+function check_out(e){
+    console.log("here");
+    localStorage.setItem("current_user",JSON.stringify({}));
+    window.location.href = "/logIn.html";
+}
 

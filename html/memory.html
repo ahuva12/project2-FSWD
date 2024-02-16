@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=devise-width, initial-scale=1">
     <title>Memory Game</title>
-    <link href="memory.css" rel="stylesheet">
-    <link href="memory-title.png" rel="icon">
+    <link href="/css/memory.css" rel="stylesheet">
+    <script src="/js/memory.js"></script>  
 </head>
 <body>
-    <header>
+        <script src="/js/header.js"></script>
+        <div id="header-container"></div>
         <h1 id="main-title">MEMORY GAME</h1>
         <h2 id="second-title">Let's See How Good Your Memory is</h2>
-    </header>
+
     <main>
         <div id="game-board">
             <h3 id="level-title">Which level do you choose?</h3>
             <ul id="level-list">
-                <button class="level-button" onclick="choose_level(this)">Easy</button>
-                <button class="level-button" onclick="choose_level(this)">Medium</button>
-                <button class="level-button" onclick="choose_level(this)">Hard</button>
+              <li>  <button class="level-button" onclick="choose_level(this)">Easy</button></li>
+               <li> <button class="level-button" onclick="choose_level(this)">Medium</button></li>
+               <li> <button class="level-button" onclick="choose_level(this)">Hard</button></li>
             </ul>
             <button id="go-button" onclick="goToPlay()">Go</button>
         </div>
     </main>
-    <footer>
-        <button>Return to the main screen</button>
-    </footer> 
-    <script src="memory.js"></script>  
 </body>
 </html>
